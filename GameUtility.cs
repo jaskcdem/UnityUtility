@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary> 共用方法庫 </summary>
@@ -341,5 +342,51 @@ public class GameUtility
             vStart = vEnd;
         }
     }
+    /// <summary> 繪製線條球體 </summary>
+    /// <param name="radius">半徑</param>
+    /// <param name="drawColor">繪製線顏色</param>
+    public void DrawWireSphere(float radius, Color drawColor = default)
+    {
+        if (radius <= 0.0f) return;
+        Gizmos.color = drawColor == default ? Color.green : drawColor;
+        Gizmos.DrawWireSphere(Transform.position, radius);
+    }
     #endregion
+
+    /// <summary> 隨機取得新的<see cref="Vector3"/> </summary>
+    /// <param name="min">最小值</param>
+    /// <param name="max">最大值</param>
+    public static Vector3 Range(Vector3 min, Vector3 max) => new(UnityEngine.Random.Range(min.x, max.x), UnityEngine.Random.Range(min.y, max.y), UnityEngine.Random.Range(min.z, max.z));
+    /// <summary> 隨機取得新的<see cref="Vector3"/> </summary>
+    /// <param name="range">隨機範圍</param>
+    public static Vector3 Range((Vector3 min, Vector3 max) range) => Range(range.min, range.max);
+}
+
+/// <summary> 敵方物件資源池 </summary>
+public class GameEnemyDataPool
+{
+    /// <summary> 資源池 </summary>
+    public List<GameObject> DataList = new();
+    /// <summary> 暫存資源池 </summary>
+    public List<GameObject> TempBuffer = new();
+    /// <summary> 敵方總類 </summary>
+    public GlobalValues.EnemyType EmType { get; private set; }
+    /// <summary> 資源範本(.prefab) </summary>
+    public object SrcTemplete { get; private set; }
+
+    /// <summary> 設定敵方總類 </summary>
+    public GameEnemyDataPool SetEmType(GlobalValues.EnemyType emType) { EmType = emType; return this; }
+
+    /// <summary> 設定敵方總類 </summary>
+    public GameEnemyDataPool SetSrcTemplete(object templete) { SrcTemplete = templete; return this; }
+}
+
+/// <summary> 遊戲管理變數 </summary>
+public static class GlobalValues
+{
+    /// <summary> 敵方總類 </summary>
+    public enum EnemyType { Human, Slime }
+
+    /// <summary> 尚存活的敵方 </summary>
+    public static List<BaseEnemy> AliveEnemies = new();
 }
