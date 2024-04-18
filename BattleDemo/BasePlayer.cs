@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>  </summary>
+/// <remarks>using unity method : Start, Update(Public), OnDrawGizmos</remarks>
 public class BasePlayer : MonoBehaviour
 {
     public float AttackRange = 1.5f;
@@ -12,11 +14,11 @@ public class BasePlayer : MonoBehaviour
         gu = new(transform);
     }
 
-    void Update()
+    public void Update()
     {
         if (Input.GetMouseButton(0))
         {
-            StartCoroutine(Attacking());
+            Attacking();
         }
     }
 
@@ -26,10 +28,9 @@ public class BasePlayer : MonoBehaviour
         gu.DrawWireSphere(AttackRange, Color.cyan);
     }
 
-    IEnumerator Attacking()
+    public virtual void Attacking()
     {
         var eList = GlobalValues.AliveEnemies;
-        Debug.Log("Attack---!!!");
         Vector3 selfPos = transform.position;
         BaseEnemy enemy;
         for (int i = 0; i < eList.Count; i++)
@@ -38,9 +39,9 @@ public class BasePlayer : MonoBehaviour
             float d = Vector3.Distance(selfPos, eList[i].transform.position);
             if (d < AttackRange)
             {
+                Debug.Log("Attack---!!!");
                 enemy.Damage();
             }
         }
-        yield return 0;
     }
 }

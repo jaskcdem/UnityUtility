@@ -2,19 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>  </summary>
+/// <remarks>using unity method : FixedUpdate(Public)</remarks>
 public class BaseEnemy : MonoBehaviour
 {
     public GlobalValues.EnemyType Type;
     public int MaxHp = 10;
     public int Hp;
-    bool bDead = false;
+    protected bool bDead = false;
 
     public BaseEnemy()
     {
         Hp = MaxHp;
     }
 
-    void FixedUpdate()
+    public void FixedUpdate()
     {
         if (bDead)
         {
@@ -33,7 +35,7 @@ public class BaseEnemy : MonoBehaviour
         if (bDead) return;
         Hp--;
         if (Hp <= 0) { Hp = 0; bDead = true; }
-        //Debug.Log($"{gameObject.name} Leaf Hp: {Hp}");
+        Debug.Log($"{gameObject.name} Leaf Hp: {Hp}");
     }
 
     public virtual void Deaded()
