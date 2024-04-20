@@ -16,7 +16,7 @@ public class BasePlayer : MonoBehaviour
 
     public void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
         {
             Attacking();
         }
