@@ -29,7 +29,6 @@ public class PlayBattleDemo : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         if (templetes != null && templetes.Count > 0)
@@ -39,7 +38,6 @@ public class PlayBattleDemo : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         second += Time.deltaTime;

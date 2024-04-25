@@ -8,10 +8,10 @@ public static class BattleManager
 {
     static List<GameEnemyDataPool> _dataPools = new();
 
-    /// <summary> ªì©l¤Æ©ÎÂX¼W¸ê·½¦À </summary>
-    /// <param name="etype">Ãş§O</param>
-    /// <param name="templete">¸ê·½½d¥»(.prefab)</param>
-    /// <param name="number">ªì©l¤Æ©ÎÂX¼W¼Æ¶q</param>
+    /// <summary> åˆå§‹åŒ–æˆ–æ“´å¢è³‡æºæ±  </summary>
+    /// <param name="etype">é¡åˆ¥</param>
+    /// <param name="templete">è³‡æºç¯„æœ¬(.prefab)</param>
+    /// <param name="number">åˆå§‹åŒ–æˆ–æ“´å¢æ•¸é‡</param>
     public static void InitDatas(GlobalValues.EnemyType etype, GameObject templete, int number)
     {
         GameEnemyDataPool p = FindByType(etype) ?? new();
@@ -28,8 +28,8 @@ public static class BattleManager
         _dataPools.Add(p);
     }
 
-    /// <summary> ¨ÌÃş§O´M§ä¸ê·½¦À </summary>
-    /// <returns>§ä¨ìªº­º­Ó¸ê·½¦À¡A­Y¨S¦³«hµ¹null</returns>
+    /// <summary> ä¾é¡åˆ¥å°‹æ‰¾è³‡æºæ±  </summary>
+    /// <returns>æ‰¾åˆ°çš„é¦–å€‹è³‡æºæ± ï¼Œè‹¥æ²’æœ‰å‰‡çµ¦null</returns>
     public static GameEnemyDataPool FindByType(GlobalValues.EnemyType etype)
     {
         var pool = _dataPools.FirstOrDefault(x => x.EmType.Equals(etype));
@@ -37,11 +37,11 @@ public static class BattleManager
         return pool;
     }
 
-    /// <summary> ¸ü¤J¸ê·½ </summary>
-    /// <param name="etype">Ãş§O</param>
-    /// <param name="loadNumber">¸ü¤J¼Æ</param>
-    /// <param name="autoExpand">¬O§_¦Û°ÊÂX¼W</param>
-    /// <returns>¥i¥Î¸ê·½¡C­YµL¹ïÀ³Ãş§O¸ê·½¦À©Î¸ü¤J¼Æ¤£¨¬1¡A«hµ¹ªÅ¸ê®Æ</returns>
+    /// <summary> è¼‰å…¥è³‡æº </summary>
+    /// <param name="etype">é¡åˆ¥</param>
+    /// <param name="loadNumber">è¼‰å…¥æ•¸</param>
+    /// <param name="autoExpand">æ˜¯å¦è‡ªå‹•æ“´å¢</param>
+    /// <returns>å¯ç”¨è³‡æºã€‚è‹¥ç„¡å°æ‡‰é¡åˆ¥è³‡æºæ± æˆ–è¼‰å…¥æ•¸ä¸è¶³1ï¼Œå‰‡çµ¦ç©ºè³‡æ–™</returns>
     public static IEnumerable<GameObject> LoadDataFromPool(GlobalValues.EnemyType etype, int loadNumber, bool autoExpand = false)
     {
         var p = FindByType(etype);
@@ -57,20 +57,20 @@ public static class BattleManager
         foreach (var go in loaded) go.SetActive(true);
         return loaded;
     }
-    /// <summary> ¨ø¸ü¸ê·½ </summary>
-    /// <remarks>¦pªG<paramref name="unloadObj"/>¤£¦b¹ïÀ³¸ê·½¦À¤º¡A«h¤£°Ê§@</remarks>
-    /// <param name="etype">Ãş§O</param>
-    /// <param name="unloadObj">­n¨ø¸üªº¸ê·½</param>
+    /// <summary> å¸è¼‰è³‡æº </summary>
+    /// <remarks>å¦‚æœ<paramref name="unloadObj"/>ä¸åœ¨å°æ‡‰è³‡æºæ± å…§ï¼Œå‰‡ä¸å‹•ä½œ</remarks>
+    /// <param name="etype">é¡åˆ¥</param>
+    /// <param name="unloadObj">è¦å¸è¼‰çš„è³‡æº</param>
     public static void UnLoadDataToPool(GlobalValues.EnemyType etype, GameObject unloadObj)
     {
         var p = FindByType(etype) ?? new();
         var _checker = p.DataList.FirstOrDefault(x => x.Equals(unloadObj));
         if (_checker != default) unloadObj.SetActive(false);
     }
-    /// <summary> ¨ø¸ü¸ê·½ </summary>
-    /// <remarks>¦pªG<paramref name="unloadObjs"/>¤£¦b¹ïÀ³¸ê·½¦À¤º¡A«h¤£°Ê§@</remarks>
-    /// <param name="etype">Ãş§O</param>
-    /// <param name="unloadObjs">­n¨ø¸üªº¸ê·½</param>
+    /// <summary> å¸è¼‰è³‡æº </summary>
+    /// <remarks>å¦‚æœ<paramref name="unloadObjs"/>ä¸åœ¨å°æ‡‰è³‡æºæ± å…§ï¼Œå‰‡ä¸å‹•ä½œ</remarks>
+    /// <param name="etype">é¡åˆ¥</param>
+    /// <param name="unloadObjs">è¦å¸è¼‰çš„è³‡æº</param>
     public static void UnLoadDataToPool(GlobalValues.EnemyType etype, params GameObject[] unloadObjs)
     {
         foreach (var obj in unloadObjs) UnLoadDataToPool(etype, obj);
