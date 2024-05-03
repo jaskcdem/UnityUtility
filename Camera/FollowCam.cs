@@ -13,7 +13,7 @@ public class FollowCam : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (m_Target) return;
+        if (!m_Target) return;
 
         float followSpeed = (m_FollowSpeed * Time.deltaTime);
         Vector3 pos = this.transform.position;

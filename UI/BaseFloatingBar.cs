@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class BaseFloatingBar : MonoBehaviour
 {
     [SerializeField] Image barImage;
-    [SerializeField] string floatingBarMane = "FloatingBar";
+    [SerializeField] string floatingBarNane = "FloatingBar";
+    [SerializeField] float floatHeight = 2.0f;
     private Transform followTarget;
 
     void Start()
@@ -16,15 +17,12 @@ public class BaseFloatingBar : MonoBehaviour
 
     void LoadingSource()
     {
-        if (barImage == null) barImage = MonoResourcesLoader.Instance.LoadObject<Image>(floatingBarMane);
+        if (barImage == null) barImage = MonoResourcesLoader.Instance.LoadObject<Image>(floatingBarNane);
     }
     public Transform GetFollowTarget() => followTarget;
     public Image GetDefultBar() => barImage;
 
-    public void SetFollowTarget(Transform _target)
-    {
-        followTarget = _target;
-    }
+    public void SetFollowTarget(Transform _target) { followTarget = _target; }
     public void ReSetImageSimple(Sprite background = default, Sprite foreground = default)
     {
         if (barImage == null) LoadingSource();
@@ -36,10 +34,11 @@ public class BaseFloatingBar : MonoBehaviour
                 _child.sprite = foreground;
         }
     }
+    public void EditFloatHeight(float height) { floatHeight = height; }
 
-    public void UpdateBarToFollowTarget((Canvas canvas, RectTransform rect, Camera camera) adsObj, float height)
+    public void UpdateBarToFollowTarget((Canvas canvas, RectTransform rect, Camera camera) adsObj)
     {
-        Vector3 vTarget = followTarget.position + Vector3.up * height;
+        Vector3 vTarget = followTarget.position + Vector3.up * floatHeight;
         UpdateBarPosition(adsObj, vTarget);
     }
     public void UpdateBarPosition((Canvas canvas, RectTransform rect, Camera camera) adsObj, Vector3 vTarget)

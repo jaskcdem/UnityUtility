@@ -71,6 +71,7 @@ public class PlayBattleDemo : MonoBehaviour
                             goo.transform.Rotate(0, Random.Range(-180.0f, 180.0f), 0.0f);
                             BaseEnemy @base = goo.GetComponent<BaseEnemy>();
                             @base.Init();
+                            @base.ReflashBar();
                             eList.Add(@base);
                         }
                     }
