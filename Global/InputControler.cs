@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary> ¿é¤J±±¨î¥x </summary>
+/// <summary> è¼¸å…¥æ§åˆ¶å° </summary>
 internal static class InputControler
 {
     internal static KeyCode[] UpKey = { KeyCode.UpArrow, KeyCode.W }, DownKey = { KeyCode.DownArrow, KeyCode.S },
@@ -10,14 +10,19 @@ internal static class InputControler
 
     internal const string HorizontalInput = "Horizontal", VerticalInput = "Vertical", MouseXInput = "Mouse X", MouseYInput = "Mouse Y", MouseScrollInput = "Mouse ScrollWheel";
 
-    /// <summary> ¨ú±o¤ô¥­ÅÜ¶q </summary>
+    /// <summary> å–å¾—æ°´å¹³è®Šé‡ </summary>
     internal static float GetHorizontalAxis => Input.GetAxis(HorizontalInput);
-    /// <summary> ¨ú±o««ª½ÅÜ¶q </summary>
+    /// <summary> å–å¾—å‚ç›´è®Šé‡ </summary>
     internal static float GetVerticalAxis => Input.GetAxis(VerticalInput);
-    /// <summary> ¨ú±o¤ô¥­·Æ¹«ÅÜ¶q </summary>
+    /// <summary> å–å¾—æ°´å¹³æ»‘é¼ è®Šé‡ </summary>
     internal static float GetMouseXAxis => Input.GetAxis(MouseXInput);
-    /// <summary> ¨ú±o««ª½·Æ¹«ÅÜ¶q </summary>
+    /// <summary> å–å¾—å‚ç›´æ»‘é¼ è®Šé‡ </summary>
     internal static float GetMouseYAxis => Input.GetAxis(MouseYInput);
-    /// <summary> ¨ú±o·Æ¹«ºu½üÅÜ¶q </summary>
+    /// <summary> å–å¾—æ»‘é¼ æ»¾è¼ªè®Šé‡ </summary>
     internal static float GetMouseWheelAxis => Input.GetAxis(MouseScrollInput);
+
+    internal static bool GetLeftKeyDown() { foreach (var key in LeftKey) { if (Input.GetKeyDown(key)) return true; } return false; }
+    internal static bool GetRightKeyDown() { foreach (var key in RightKey) { if (Input.GetKeyDown(key)) return true; } return false; }
+    internal static bool GetUpKeyDown() { foreach (var key in UpKey) { if (Input.GetKeyDown(key)) return true; } return false; }
+    internal static bool GetDownKeyDown() { foreach (var key in DownKey) { if (Input.GetKeyDown(key)) return true; } return false; }
 }

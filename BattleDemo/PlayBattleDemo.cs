@@ -1,3 +1,4 @@
+using GreenUtility;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,8 @@ public class PlayBattleDemo : MonoBehaviour
     List<(GlobalValues.EnemyType eType, GameObject obj)> templetes = new();
     (Vector3 min, Vector3 max) PositionRange; //Serialize valueTuple is too hard to Unity
     float second; // Time Measurement
+    [SerializeField] int startItemNumber = 1, popupItemNumber = 5;
+    [SerializeField] string[] ItemResourcesPath = new[] { "HealItem", "RecoverItem", "DamageItem", "BurnoutItem" };
 
     private void Awake()
     {
@@ -29,7 +32,6 @@ public class PlayBattleDemo : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         if (templetes != null && templetes.Count > 0)
@@ -37,12 +39,36 @@ public class PlayBattleDemo : MonoBehaviour
             foreach (var (eType, obj) in templetes)
                 BattleManager.InitDatas(eType, obj, startNumber);
         }
+
+        if (startItemNumber > 0)
+            foreach (string path in ItemResourcesPath)
+            {
+                for (int i = 0; i < startItemNumber; i++)
+                {
+                    GameObject item = MonoResourcesLoader.Instance.LoadGameObject(path);
+                    item.transform.SetLocalPositionAndRotation(GameUtility.Range(PositionRange), Quaternion.identity);
+                    Instantiate(item);
+                }
+            }
     }
 
-    // Update is called once per frame
     void Update()
     {
         second += Time.deltaTime;
+        if ((int)second % 7 == 0 && popupItemNumber > 0)
+        {
+            GameObject[] pus = GameObject.FindGameObjectsWithTag("PowerUp");
+            if (pus.Length <= popupItemNumber)
+                foreach (string path in ItemResourcesPath)
+                {
+                    for (int i = 0; i < popupItemNumber; i++)
+                    {
+                        GameObject item = MonoResourcesLoader.Instance.LoadGameObject(path);
+                        item.transform.SetLocalPositionAndRotation(GameUtility.Range(PositionRange), Quaternion.identity);
+                        Instantiate(item);
+                    }
+                }
+        }
         if (second >= 15)
         {
             int _aliveCnt = GlobalValues.AliveEnemies.Count;
@@ -73,6 +99,7 @@ public class PlayBattleDemo : MonoBehaviour
                             goo.transform.Rotate(0, Random.Range(-180.0f, 180.0f), 0.0f);
                             BaseEnemy @base = goo.GetComponent<BaseEnemy>();
                             @base.Init();
+                            @base.ReflashBar();
                             eList.Add(@base);
                         }
                     }

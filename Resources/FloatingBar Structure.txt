@@ -1,0 +1,3 @@
+* FloatingBar(UnityEngine.UI.Image) - AddComponent<BaseFloatingBar>, Source : [backgroudImage]
+  >> bar-perent(UnityEngine.UI.Image) - Note : BarSub, Source : [FillerImage]
+    >> bar(UnityEngine.UI.Image) - Note : BarMain, Source : [FillerImage]

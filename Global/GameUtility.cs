@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary> ¦@¥Î¤èªk®w </summary>
+/// <summary> å…±ç”¨æ–¹æ³•åº« </summary>
 public class GameUtility
 {
     public GameUtility(Transform transform)
@@ -11,22 +11,22 @@ public class GameUtility
         Transform = transform;
     }
 
-    /// <summary> ¾Ş§@ª«Åé </summary>
+    /// <summary> æ“ä½œç‰©é«” </summary>
     public Transform Transform { get; set; }
-    /// <summary> ¾Ş§@ª«Åé </summary>
+    /// <summary> æ“ä½œç‰©é«” </summary>
     public Rigidbody Rigidbody { get; set; }
-    /// <summary> ¾Ş§@ª«Åé </summary>
+    /// <summary> æ“ä½œç‰©é«” </summary>
     public CharacterController Character { get; set; }
 
-    /// <summary> ²¾°Ê³t«×<para>¹w³]10.0f</para> </summary>
+    /// <summary> ç§»å‹•é€Ÿåº¦<para>é è¨­10.0f</para> </summary>
     public float MoveSpeed = 10.0f;
-    /// <summary> Âà¦V³t«×<para>¹w³]80.0f</para> </summary>
+    /// <summary> è½‰å‘é€Ÿåº¦<para>é è¨­80.0f</para> </summary>
     public float RotSpeed = 80.0f;
 
-    /* »¡©ú¡G
-     * ·í±ÛÂàª«Åé¤¤ Rotation ®y¼Ğ X ªº®É­Ô¬° pitch¡A±ÛÂà Y ¶b®É¬° yaw¡A±ÛÂà Z ¶b®É¬° roll ¡C
-     * ¦]¦¹·í¨ú±o¸Ó·Æ¹«ªºX, Y ¶b²¾°Ê®Éªº¼Æ­È¡A½Ğ°O±o·Æ¹«X¶b²¾°Ê¹ïÀ³¨ì yaw¡A¬° Unity ªºY¶b¡A¥k¥¿¥ª­t¡C
-     * ·Æ¹« Y¶b²¾°Ê¹ïÀ³¨ì pitch¡A¬° Unity ªº X¶b¡A¤W­t¤U¥¿
+    /* èªªæ˜ï¼š
+     * ç•¶æ—‹è½‰ç‰©é«”ä¸­ Rotation åº§æ¨™ X çš„æ™‚å€™ç‚º pitchï¼Œæ—‹è½‰ Y è»¸æ™‚ç‚º yawï¼Œæ—‹è½‰ Z è»¸æ™‚ç‚º roll ã€‚
+     * å› æ­¤ç•¶å–å¾—è©²æ»‘é¼ çš„X, Y è»¸ç§»å‹•æ™‚çš„æ•¸å€¼ï¼Œè«‹è¨˜å¾—æ»‘é¼ Xè»¸ç§»å‹•å°æ‡‰åˆ° yawï¼Œç‚º Unity çš„Yè»¸ï¼Œå³æ­£å·¦è² ã€‚
+     * æ»‘é¼  Yè»¸ç§»å‹•å°æ‡‰åˆ° pitchï¼Œç‚º Unity çš„ Xè»¸ï¼Œä¸Šè² ä¸‹æ­£
      */
 
     void InvokeAction(Action mainAction, Action beforeAction = default, Action afterAction = default)
@@ -43,9 +43,9 @@ public class GameUtility
         Vector3 moveDirt = new(h, 0, v);
         Transform.position += moveDirt * Time.deltaTime * MoveSpeed;
     }
-    /// <summary> Âà¦V </summary>
-    /// <param name="rotX">¤ô¥­Âà¦V´T«×(¹ïYÂà)</param>
-    /// <param name="rotY">««ª½Âà¦V´T«×(¹ïXÂà)</param>
+    /// <summary> è½‰å‘ </summary>
+    /// <param name="rotX">æ°´å¹³è½‰å‘å¹…åº¦(å°Yè½‰)</param>
+    /// <param name="rotY">å‚ç›´è½‰å‘å¹…åº¦(å°Xè½‰)</param>
     private void TransformRotate(float rotX = 0.0f, float rotY = 0.0f)
     {
         Vector3 vRot = Vector3.zero;
@@ -54,9 +54,9 @@ public class GameUtility
         if (vRot != Vector3.zero) Transform.Rotate(vRot);
     }
 
-    /// <summary> ¦V¶q²¾°Ê»P¤ô¥­Âà¦V </summary>
-    /// <param name="beforeAction">²¾°Ê«e°Ê§@</param>
-    /// <param name="afterAction">²¾°Ê«á°Ê§@</param>
+    /// <summary> å‘é‡ç§»å‹•èˆ‡æ°´å¹³è½‰å‘ </summary>
+    /// <param name="beforeAction">ç§»å‹•å‰å‹•ä½œ</param>
+    /// <param name="afterAction">ç§»å‹•å¾Œå‹•ä½œ</param>
     public GameUtility TransformMoveAndRotateY(Action beforeAction = default, Action afterAction = default)
     {
         InvokeAction(() =>
@@ -66,9 +66,9 @@ public class GameUtility
         }, beforeAction, afterAction);
         return this;
     }
-    /// <summary> ¦V¶q²¾°Ê»P««ª½Âà¦V </summary>
-    /// <param name="beforeAction">²¾°Ê«e°Ê§@</param>
-    /// <param name="afterAction">²¾°Ê«á°Ê§@</param>
+    /// <summary> å‘é‡ç§»å‹•èˆ‡å‚ç›´è½‰å‘ </summary>
+    /// <param name="beforeAction">ç§»å‹•å‰å‹•ä½œ</param>
+    /// <param name="afterAction">ç§»å‹•å¾Œå‹•ä½œ</param>
     public GameUtility TransformMoveAndRotateX(Action beforeAction = default, Action afterAction = default)
     {
         InvokeAction(() =>
@@ -78,9 +78,9 @@ public class GameUtility
         }, beforeAction, afterAction);
         return this;
     }
-    /// <summary> ¦V¶q²¾°Ê»P««ª½/¤ô¥­Âà¦V </summary>
-    /// <param name="beforeAction">²¾°Ê«e°Ê§@</param>
-    /// <param name="afterAction">²¾°Ê«á°Ê§@</param>
+    /// <summary> å‘é‡ç§»å‹•èˆ‡å‚ç›´/æ°´å¹³è½‰å‘ </summary>
+    /// <param name="beforeAction">ç§»å‹•å‰å‹•ä½œ</param>
+    /// <param name="afterAction">ç§»å‹•å¾Œå‹•ä½œ</param>
     public GameUtility TransformMoveAndRotateXY(Action beforeAction = default, Action afterAction = default)
     {
         InvokeAction(() =>
@@ -91,9 +91,9 @@ public class GameUtility
         return this;
     }
 
-    /// <summary> ²¾°Ê»P¥­½wÂà¦V </summary>
-    /// <param name="beforeAction">²¾°Ê«e°Ê§@</param>
-    /// <param name="afterAction">²¾°Ê«á°Ê§@</param>
+    /// <summary> ç§»å‹•èˆ‡å¹³ç·©è½‰å‘ </summary>
+    /// <param name="beforeAction">ç§»å‹•å‰å‹•ä½œ</param>
+    /// <param name="afterAction">ç§»å‹•å¾Œå‹•ä½œ</param>
     public GameUtility TransformMoveAndRotate(Action beforeAction = default, Action afterAction = default)
     {
         void _main()
@@ -104,15 +104,15 @@ public class GameUtility
             if (moveStg > 0)
             {
                 moveDirt.Normalize();
-                float angle = Vector3.Angle(Transform.forward, moveDirt); //¨ú±o§¨¨¤
+                float angle = Vector3.Angle(Transform.forward, moveDirt); //ï¿½ï¿½ï¿½oï¿½ï¿½ï¿½ï¿½
                 float rotAngle = RotSpeed * Time.deltaTime;
                 if (angle < rotAngle) Transform.forward = moveDirt;
                 else
                 {
-                    /* Dot ¨ú±o¤º¿n­È
-                     * (1) 90«× => dot = 0
-                     * (2) 0«× => dot = 1
-                     * (3) 180«× => dot = -1
+                    /* Dot å–å¾—å…§ç©å€¼
+                     * (1) 90åº¦ => dot = 0
+                     * (2) 0åº¦ => dot = 1
+                     * (3) 180åº¦ => dot = -1
                      */
                     float _sign = Vector3.Dot(Transform.right, moveDirt) > 0 ? 1.0f : -1.0f;
                     Transform.forward = Quaternion.Euler(0, angle * _sign, 0) * Transform.forward;
@@ -128,18 +128,18 @@ public class GameUtility
     #region << Transform Quaternion Rotate >>
     Quaternion GetRotQuaternion() => Quaternion.Euler(-InputControler.GetMouseYAxis * Time.deltaTime * RotSpeed, InputControler.GetMouseXAxis * Time.deltaTime * RotSpeed, 0);
 
-    /// <summary> QuaternionÂà¦V </summary>
-    /// <param name="beforeAction">Âà¦V«e°Ê§@</param>
-    /// <param name="afterAction">Âà¦V«á°Ê§@</param>
+    /// <summary> Quaternionè½‰å‘ </summary>
+    /// <param name="beforeAction">è½‰å‘å‰å‹•ä½œ</param>
+    /// <param name="afterAction">è½‰å‘å¾Œå‹•ä½œ</param>
     public GameUtility TransformQuaternionRotate(Action beforeAction = default, Action afterAction = default)
     {
         InvokeAction(() => Transform.rotation *= GetRotQuaternion(),
             beforeAction, afterAction);
         return this;
     }
-    /// <summary> QuaternionÂà¦V </summary>
-    /// <param name="beforeAction">Âà¦V«e°Ê§@</param>
-    /// <param name="afterAction">Âà¦V«á°Ê§@</param>
+    /// <summary> Quaternionè½‰å‘ </summary>
+    /// <param name="beforeAction">è½‰å‘å‰å‹•ä½œ</param>
+    /// <param name="afterAction">è½‰å‘å¾Œå‹•ä½œ</param>
     public GameUtility TransformQuaternionRotateForward(Action beforeAction = default, Action afterAction = default)
     {
         InvokeAction(() => Transform.forward = GetRotQuaternion() * Transform.forward,
@@ -149,18 +149,18 @@ public class GameUtility
     #endregion
 
     #region << Transform Moving >>
-    /// <summary> ¦V¶q²¾°Ê </summary>
-    /// <param name="beforeAction">²¾°Ê«e°Ê§@</param>
-    /// <param name="afterAction">²¾°Ê«á°Ê§@</param>
+    /// <summary> å‘é‡ç§»å‹• </summary>
+    /// <param name="beforeAction">ç§»å‹•å‰å‹•ä½œ</param>
+    /// <param name="afterAction">ç§»å‹•å¾Œå‹•ä½œ</param>
     public GameUtility TransformMoving(Action beforeAction = default, Action afterAction = default)
     {
         InvokeAction(TransformMove, beforeAction, afterAction);
         return this;
     }
-    /// <summary> ¦V¶q²¾°Ê </summary>
-    /// <param name="moveAction">²¾°Ê°Ê§@</param>
-    /// <param name="beforeAction">²¾°Ê«e°Ê§@</param>
-    /// <param name="afterAction">²¾°Ê«á°Ê§@</param>
+    /// <summary> å‘é‡ç§»å‹• </summary>
+    /// <param name="moveAction">ç§»å‹•å‹•ä½œ</param>
+    /// <param name="beforeAction">ç§»å‹•å‰å‹•ä½œ</param>
+    /// <param name="afterAction">ç§»å‹•å¾Œå‹•ä½œ</param>
     public GameUtility TransformMoving(Action moveAction = default, Action beforeAction = default, Action afterAction = default)
     {
         InvokeAction(moveAction, beforeAction, afterAction);
@@ -169,9 +169,9 @@ public class GameUtility
     #endregion
 
     #region << Rigidbody Moving/Rotating >>
-    /// <summary> ª«Åé²¾°Ê </summary>
-    /// <param name="beforeAction">²¾°Ê«e°Ê§@</param>
-    /// <param name="afterAction">²¾°Ê«á°Ê§@</param>
+    /// <summary> ç‰©é«”ç§»å‹• </summary>
+    /// <param name="beforeAction">ç§»å‹•å‰å‹•ä½œ</param>
+    /// <param name="afterAction">ç§»å‹•å¾Œå‹•ä½œ</param>
     public void RigidbodyMoving(Action beforeAction = default, Action afterAction = default)
     {
         if (Rigidbody)
@@ -183,11 +183,11 @@ public class GameUtility
             }, beforeAction, afterAction);
         }
     }
-    /// <summary> ª«Åé²¾°Ê </summary>
-    /// <param name="move_x">¤ô¥­²¾°Ê¶q</param>
-    /// <param name="move_z">««ª½²¾°Ê¶q</param>
-    /// <param name="beforeAction">²¾°Ê«e°Ê§@</param>
-    /// <param name="afterAction">²¾°Ê«á°Ê§@</param>
+    /// <summary> ç‰©é«”ç§»å‹• </summary>
+    /// <param name="move_x">æ°´å¹³ç§»å‹•é‡</param>
+    /// <param name="move_z">å‚ç›´ç§»å‹•é‡</param>
+    /// <param name="beforeAction">ç§»å‹•å‰å‹•ä½œ</param>
+    /// <param name="afterAction">ç§»å‹•å¾Œå‹•ä½œ</param>
     public void RigidbodyMoving(float move_x, float move_z, Action beforeAction = default, Action afterAction = default)
     {
         if (Rigidbody)
@@ -199,10 +199,10 @@ public class GameUtility
             }, beforeAction, afterAction);
         }
     }
-    /// <summary> ª«Åé²¾°Ê </summary>
-    /// <param name="moveDirt">²¾°Ê¤è¦V</param>
-    /// <param name="beforeAction">²¾°Ê«e°Ê§@</param>
-    /// <param name="afterAction">²¾°Ê«á°Ê§@</param>
+    /// <summary> ç‰©é«”ç§»å‹• </summary>
+    /// <param name="moveDirt">ç§»å‹•æ–¹å‘</param>
+    /// <param name="beforeAction">ç§»å‹•å‰å‹•ä½œ</param>
+    /// <param name="afterAction">ç§»å‹•å¾Œå‹•ä½œ</param>
     public void RigidbodyMoving(Vector3 moveDirt, Action beforeAction = default, Action afterAction = default)
     {
         if (Rigidbody)
@@ -210,9 +210,9 @@ public class GameUtility
             InvokeAction(() => Rigidbody.MovePosition(Rigidbody.position + moveDirt * Time.deltaTime * MoveSpeed), beforeAction, afterAction);
         }
     }
-    /// <summary> ª«Åé²¾°Ê </summary>
-    /// <param name="beforeAction">²¾°Ê«e°Ê§@</param>
-    /// <param name="afterAction">²¾°Ê«á°Ê§@</param>
+    /// <summary> ç‰©é«”ç§»å‹• </summary>
+    /// <param name="beforeAction">ç§»å‹•å‰å‹•ä½œ</param>
+    /// <param name="afterAction">ç§»å‹•å¾Œå‹•ä½œ</param>
     public void RigidbodyVelocityMoving(Action beforeAction = default, Action afterAction = default)
     {
         if (Rigidbody)
@@ -221,10 +221,10 @@ public class GameUtility
             RigidbodyVelocityMoving(inputDir, beforeAction, afterAction);
         }
     }
-    /// <summary> ª«Åé²¾°Ê </summary>
-    /// <param name="velDirt">²¾°Ê¤è¦V</param>
-    /// <param name="beforeAction">²¾°Ê«e°Ê§@</param>
-    /// <param name="afterAction">²¾°Ê«á°Ê§@</param>
+    /// <summary> ç‰©é«”ç§»å‹• </summary>
+    /// <param name="velDirt">ç§»å‹•æ–¹å‘</param>
+    /// <param name="beforeAction">ç§»å‹•å‰å‹•ä½œ</param>
+    /// <param name="afterAction">ç§»å‹•å¾Œå‹•ä½œ</param>
     public void RigidbodyVelocityMoving(Vector3 velDirt, Action beforeAction = default, Action afterAction = default)
     {
         void _main()
@@ -240,9 +240,9 @@ public class GameUtility
             InvokeAction(_main, beforeAction, afterAction);
         }
     }
-    /// <summary> ª«ÅéQuaternionÂà¦V </summary>
-    /// <param name="beforeAction">Âà¦V«e°Ê§@</param>
-    /// <param name="afterAction">Âà¦V«á°Ê§@</param>
+    /// <summary> ç‰©é«”Quaternionè½‰å‘ </summary>
+    /// <param name="beforeAction">è½‰å‘å‰å‹•ä½œ</param>
+    /// <param name="afterAction">è½‰å‘å¾Œå‹•ä½œ</param>
     public void RigidbodyRotating(Action beforeAction = default, Action afterAction = default)
     {
         void _main()
@@ -268,10 +268,10 @@ public class GameUtility
         return moveDirt;
     }
 
-    /// <summary> ¨¤¦â²¾°Ê </summary>
-    /// <param name="move_y">¼Y¸¨²¾°Ê¶q(¹w³]­«¤O)</param>
-    /// <param name="beforeAction">²¾°Ê«e°Ê§@</param>
-    /// <param name="afterAction">²¾°Ê«á°Ê§@</param>
+    /// <summary> è§’è‰²ç§»å‹• </summary>
+    /// <param name="move_y">å¢œè½ç§»å‹•é‡(é è¨­é‡åŠ›)</param>
+    /// <param name="beforeAction">ç§»å‹•å‰å‹•ä½œ</param>
+    /// <param name="afterAction">ç§»å‹•å¾Œå‹•ä½œ</param>
     public void CharacterSimpleMoving(float move_y = 0.0f, Action beforeAction = default, Action afterAction = default)
     {
         if (Character)
@@ -280,12 +280,12 @@ public class GameUtility
                beforeAction, afterAction);
         }
     }
-    /// <summary> ¨¤¦â²¾°Ê </summary>
-    /// <param name="move_x">¤ô¥­²¾°Ê¶q</param>
-    /// <param name="move_z">««ª½²¾°Ê¶q</param>
-    /// <param name="move_y">¼Y¸¨²¾°Ê¶q(¹w³]­«¤O)</param>
-    /// <param name="beforeAction">²¾°Ê«e°Ê§@</param>
-    /// <param name="afterAction">²¾°Ê«á°Ê§@</param>
+    /// <summary> è§’è‰²ç§»å‹• </summary>
+    /// <param name="move_x">æ°´å¹³ç§»å‹•é‡</param>
+    /// <param name="move_z">å‚ç›´ç§»å‹•é‡</param>
+    /// <param name="move_y">å¢œè½ç§»å‹•é‡(é è¨­é‡åŠ›)</param>
+    /// <param name="beforeAction">ç§»å‹•å‰å‹•ä½œ</param>
+    /// <param name="afterAction">ç§»å‹•å¾Œå‹•ä½œ</param>
     public void CharacterSimpleMoving(float move_x, float move_z, float move_y = 0.0f, Action beforeAction = default, Action afterAction = default)
     {
         if (Character)
@@ -294,10 +294,10 @@ public class GameUtility
               beforeAction, afterAction);
         }
     }
-    /// <summary> ¨¤¦â²¾°Ê </summary>
-    /// <param name="moveDirt">²¾°Ê¤è¦V</param>
-    /// <param name="beforeAction">²¾°Ê«e°Ê§@</param>
-    /// <param name="afterAction">²¾°Ê«á°Ê§@</param>
+    /// <summary> è§’è‰²ç§»å‹• </summary>
+    /// <param name="moveDirt">ç§»å‹•æ–¹å‘</param>
+    /// <param name="beforeAction">ç§»å‹•å‰å‹•ä½œ</param>
+    /// <param name="afterAction">ç§»å‹•å¾Œå‹•ä½œ</param>
     public void CharacterMoving(Vector3 moveDirt, Action beforeAction = default, Action afterAction = default)
     {
         if (Character)
@@ -306,12 +306,12 @@ public class GameUtility
                 beforeAction, afterAction);
         }
     }
-    /// <summary> ¨¤¦â²¾°Ê </summary>
-    /// <param name="move_x">¤ô¥­²¾°Ê¶q</param>
-    /// <param name="move_z">««ª½²¾°Ê¶q</param>
-    /// <param name="move_y">¼Y¸¨²¾°Ê¶q(¹w³]­«¤O)</param>
-    /// <param name="beforeAction">²¾°Ê«e°Ê§@</param>
-    /// <param name="afterAction">²¾°Ê«á°Ê§@</param>
+    /// <summary> è§’è‰²ç§»å‹• </summary>
+    /// <param name="move_x">æ°´å¹³ç§»å‹•é‡</param>
+    /// <param name="move_z">å‚ç›´ç§»å‹•é‡</param>
+    /// <param name="move_y">å¢œè½ç§»å‹•é‡(é è¨­é‡åŠ›)</param>
+    /// <param name="beforeAction">ç§»å‹•å‰å‹•ä½œ</param>
+    /// <param name="afterAction">ç§»å‹•å¾Œå‹•ä½œ</param>
     public void CharacterMoving(float move_x, float move_z, float move_y = 0.0f, Action beforeAction = default, Action afterAction = default)
     {
         if (Character)
@@ -323,10 +323,10 @@ public class GameUtility
     #endregion
 
     #region << Drow in OnDrawGizmos() >>
-    /// <summary> Ã¸»s«e¤è¥b¶ê </summary>
-    /// <param name="radius">¥b®|</param>
-    /// <param name="lineHight">Ã¸»s°ª«×</param>
-    /// <param name="drawColor">Ã¸»s½uÃC¦â</param>
+    /// <summary> ç¹ªè£½å‰æ–¹åŠåœ“ </summary>
+    /// <param name="radius">åŠå¾‘</param>
+    /// <param name="lineHight">ç¹ªè£½é«˜åº¦</param>
+    /// <param name="drawColor">ç¹ªè£½ç·šé¡è‰²</param>
     public void DrowHalfCircle(float radius, float lineHight = 0.0f, Color drawColor = default)
     {
         if (radius <= 0.0f) return;
@@ -342,9 +342,9 @@ public class GameUtility
             vStart = vEnd;
         }
     }
-    /// <summary> Ã¸»s½u±ø²yÅé </summary>
-    /// <param name="radius">¥b®|</param>
-    /// <param name="drawColor">Ã¸»s½uÃC¦â</param>
+    /// <summary> ç¹ªè£½ç·šæ¢çƒé«” </summary>
+    /// <param name="radius">åŠå¾‘</param>
+    /// <param name="drawColor">ç¹ªè£½ç·šé¡è‰²</param>
     public void DrawWireSphere(float radius, Color drawColor = default)
     {
         if (radius <= 0.0f) return;
@@ -353,40 +353,40 @@ public class GameUtility
     }
     #endregion
 
-    /// <summary> ÀH¾÷¨ú±o·sªº<see cref="Vector3"/> </summary>
-    /// <param name="min">³Ì¤p­È</param>
-    /// <param name="max">³Ì¤j­È</param>
+    /// <summary> éš¨æ©Ÿå–å¾—æ–°çš„<see cref="Vector3"/> </summary>
+    /// <param name="min">æœ€å°å€¼</param>
+    /// <param name="max">æœ€å¤§å€¼</param>
     public static Vector3 Range(Vector3 min, Vector3 max) => new(UnityEngine.Random.Range(min.x, max.x), UnityEngine.Random.Range(min.y, max.y), UnityEngine.Random.Range(min.z, max.z));
-    /// <summary> ÀH¾÷¨ú±o·sªº<see cref="Vector3"/> </summary>
-    /// <param name="range">ÀH¾÷½d³ò</param>
+    /// <summary> éš¨æ©Ÿå–å¾—æ–°çš„<see cref="Vector3"/> </summary>
+    /// <param name="range">éš¨æ©Ÿç¯„åœ</param>
     public static Vector3 Range((Vector3 min, Vector3 max) range) => Range(range.min, range.max);
 }
 
-/// <summary> ¼Ä¤èª«¥ó¸ê·½¦À </summary>
-public class GameEnemyDataPool
+/// <summary> æ•µæ–¹ç‰©ä»¶è³‡æºæ±  </summary>
+public partial class GameEnemyDataPool
 {
-    /// <summary> ¸ê·½¦À </summary>
+    /// <summary> è³‡æºæ±  </summary>
     public List<GameObject> DataList = new();
-    /// <summary> ¼È¦s¸ê·½¦À </summary>
+    /// <summary> æš«å­˜è³‡æºæ±  </summary>
     public List<GameObject> TempBuffer = new();
-    /// <summary> ¼Ä¤èÁ`Ãş </summary>
+    /// <summary> æ•µæ–¹ç¸½é¡ </summary>
     public GlobalValues.EnemyType EmType { get; private set; }
-    /// <summary> ¸ê·½½d¥»(.prefab) </summary>
+    /// <summary> è³‡æºç¯„æœ¬(.prefab) </summary>
     public object SrcTemplete { get; private set; }
 
-    /// <summary> ³]©w¼Ä¤èÁ`Ãş </summary>
+    /// <summary> è¨­å®šæ•µæ–¹ç¸½é¡ </summary>
     public GameEnemyDataPool SetEmType(GlobalValues.EnemyType emType) { EmType = emType; return this; }
 
-    /// <summary> ³]©w¼Ä¤èÁ`Ãş </summary>
+    /// <summary> è¨­å®šè³‡æºç¯„æœ¬ </summary>
     public GameEnemyDataPool SetSrcTemplete(object templete) { SrcTemplete = templete; return this; }
 }
 
-/// <summary> ¹CÀ¸ºŞ²zÅÜ¼Æ </summary>
-public static class GlobalValues
+/// <summary> éŠæˆ²ç®¡ç†è®Šæ•¸ </summary>
+public static partial class GlobalValues
 {
-    /// <summary> ¼Ä¤èÁ`Ãş </summary>
+    /// <summary> æ•µæ–¹ç¸½é¡ </summary>
     public enum EnemyType { Human, Slime }
 
-    /// <summary> ©|¦s¬¡ªº¼Ä¤è </summary>
+    /// <summary> å°šå­˜æ´»çš„æ•µæ–¹ </summary>
     public static List<BaseEnemy> AliveEnemies = new();
 }
