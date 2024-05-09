@@ -6,13 +6,14 @@ using UnityEngine.Timeline;
 using UnityEngine.UI;
 
 /// <summary>  </summary>
-/// <remarks>using unity method : Start, Update(Public), OnDrawGizmos</remarks>
+/// <remarks>using unity method : Start, Update(Public), FixedUpdate, OnDrawGizmos</remarks>
 public class BasePlayer : MonoBehaviour
 {
     public int MaxHp = 10, Hp, MaxMp = 10, Mp;
     public float AttackRange = 1.5f;
     GameUtility gu;
     protected bool bDead = false;
+    Vector3 startPos;
 
     //player bar setting : subBar is what under mainBar but not background
     [SerializeField] protected SerializePlayerBar PlayerBar;
@@ -20,11 +21,11 @@ public class BasePlayer : MonoBehaviour
     //floating bar setting
     [SerializeField] protected SerializePlayerFloatingBar PlayerFloatingBar;
     protected string barKeyHP, barkeyMP;
-    Vector3 StartPosition => transform.position + Vector3.up * PlayerFloatingBar.floatingStartY;
 
     private void Start()
     {
         gu = new(transform);
+        startPos = transform.position;
         Debug.Assert(PlayerBar != null || PlayerFloatingBar != null, "[PlayerBar] and [PlayerFloatingBar] can not both empty");
         if (PlayerFloatingBar != null && PlayerFloatingBar.showFloating)
         {
@@ -54,6 +55,16 @@ public class BasePlayer : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        if (bDead)
+        {
+            transform.position = startPos;
+            Revival();
+        }
+        if (transform.position.y <= -50) transform.position = startPos;
+    }
+
     private void OnDrawGizmos()
     {
         gu ??= new(transform);
@@ -77,18 +88,14 @@ public class BasePlayer : MonoBehaviour
         }
     }
 
+    #region << HP/MP Change >>
     public virtual void Damage()
     {
         if (bDead) return;
         Hp--;
         if (Hp <= 0) { Hp = 0; bDead = true; }
         Debug.Log($"{gameObject.name} Leaf Hp: {Hp}");
-        MonoUIManager.Instance.SpawnFloatingText("-1", PlayerFloatingBar.defTextIndex, StartPosition);
-
-        float _pcent = Hp / MaxHp;
-        if (PlayerFloatingBar.showFloating && PlayerFloatingBar.hpBar) MonoUIManager.Instance.UpdateBar(_pcent, barKeyHP);
-        if (PlayerBar.Healthbar) MonoUIManager.Instance.UpdateBar(_pcent, PlayerBar.Healthbar);
-        if (PlayerBar.HealthbarSub) StartCoroutine(MonoUIManager.Instance.UpdateBarAsny(_pcent, PlayerBar.HealthbarSub));
+        AdjustBar((PlayerFloatingBar.hpBar, barKeyHP, PlayerBar.Healthbar, PlayerBar.HealthbarSub), (-1, Hp, MaxHp));
     }
 
     public virtual void Burnout()
@@ -96,12 +103,7 @@ public class BasePlayer : MonoBehaviour
         Mp--;
         if (Mp <= 0) Mp = 0;
         Debug.Log($"{gameObject.name} Leaf Mp: {Mp}");
-        MonoUIManager.Instance.SpawnFloatingText("-1", PlayerFloatingBar.defTextIndex, StartPosition, Color.cyan);
-
-        float _pcent = Mp / MaxMp;
-        if (PlayerFloatingBar.showFloating && PlayerFloatingBar.mpBar) MonoUIManager.Instance.UpdateBar(_pcent, barkeyMP);
-        if (PlayerBar.Manabar) MonoUIManager.Instance.UpdateBar(_pcent, PlayerBar.Manabar);
-        if (PlayerBar.ManabarSub) StartCoroutine(MonoUIManager.Instance.UpdateBarAsny(_pcent, PlayerBar.ManabarSub));
+        AdjustBar((PlayerFloatingBar.mpBar, barkeyMP, PlayerBar.Manabar, PlayerBar.ManabarSub), (-1, Mp, MaxMp), Color.cyan);
     }
 
     public virtual void Heal()
@@ -109,12 +111,7 @@ public class BasePlayer : MonoBehaviour
         Hp++;
         if (Hp >= MaxHp) Hp = MaxHp;
         Debug.Log($"{gameObject.name} Leaf Hp: {Hp}");
-        MonoUIManager.Instance.SpawnFloatingText("+1", PlayerFloatingBar.defTextIndex, StartPosition, Color.green);
-
-        float _pcent = Hp / MaxHp;
-        if (PlayerFloatingBar.showFloating && PlayerFloatingBar.hpBar) MonoUIManager.Instance.UpdateBar(_pcent, barKeyHP);
-        if (PlayerBar.HealthbarSub) MonoUIManager.Instance.UpdateBar(_pcent, PlayerBar.HealthbarSub);
-        if (PlayerBar.Healthbar) StartCoroutine(MonoUIManager.Instance.UpdateBarAsny(_pcent, PlayerBar.Healthbar));
+        AdjustBar((PlayerFloatingBar.hpBar, barKeyHP, PlayerBar.HealthbarSub, PlayerBar.Healthbar), (1, Hp, MaxHp), Color.green);
     }
 
     public virtual void Recover()
@@ -122,13 +119,19 @@ public class BasePlayer : MonoBehaviour
         Mp++;
         if (Mp >= MaxHp) Mp = MaxMp;
         Debug.Log($"{gameObject.name} Leaf Mp: {Mp}");
-        MonoUIManager.Instance.SpawnFloatingText("+1", PlayerFloatingBar.defTextIndex, StartPosition, Color.blue);
-
-        float _pcent = Mp / MaxMp;
-        if (PlayerFloatingBar.showFloating && PlayerFloatingBar.mpBar) MonoUIManager.Instance.UpdateBar(_pcent, barkeyMP);
-        if (PlayerBar.ManabarSub) MonoUIManager.Instance.UpdateBar(_pcent, PlayerBar.ManabarSub);
-        if (PlayerBar.Manabar) StartCoroutine(MonoUIManager.Instance.UpdateBarAsny(_pcent, PlayerBar.Manabar));
+        AdjustBar((PlayerFloatingBar.mpBar, barkeyMP, PlayerBar.ManabarSub, PlayerBar.Manabar), (1, Mp, MaxMp), Color.blue);
     }
+
+    public virtual void Revival()
+    {
+        Hp = MaxHp;
+        int recover = MaxMp / 2;
+        Mp += recover;
+        AdjustBar((PlayerFloatingBar.hpBar, barKeyHP, PlayerBar.HealthbarSub, PlayerBar.Healthbar), (MaxHp, Hp, MaxHp), Color.green);
+        AdjustBar((PlayerFloatingBar.mpBar, barkeyMP, PlayerBar.ManabarSub, PlayerBar.Manabar), (recover, Mp, MaxMp), Color.blue);
+        bDead = false;
+    }
+    #endregion
 
     /// <summary> bar ui control </summary>
     /// <param name="bars">bar info</param>
@@ -137,15 +140,15 @@ public class BasePlayer : MonoBehaviour
     protected void AdjustBar((BaseFloatingBar barScript, string key, Image suddenChangeBar, Image slowChangeBar) bars,
         (float amount, float changed, float max) values, Color textColor = default)
     {
-        string flowText = values.amount switch { > 0 => $"+{values}", _ => values.amount.ToString() };
+        string flowText = values.amount switch { > 0 => $"+{values.amount}", _ => values.amount.ToString() };
         if (textColor != default)
-            MonoUIManager.Instance.SpawnFloatingText(flowText, PlayerFloatingBar.defTextIndex, StartPosition, textColor);
+            MonoUIManager.Instance.SpawnFloatingText(flowText, PlayerFloatingBar.defTextIndex, transform.position + Vector3.up * PlayerFloatingBar.floatingStartY, textColor);
         else
-            MonoUIManager.Instance.SpawnFloatingText(flowText, PlayerFloatingBar.defTextIndex, StartPosition);
+            MonoUIManager.Instance.SpawnFloatingText(flowText, PlayerFloatingBar.defTextIndex, transform.position + Vector3.up * PlayerFloatingBar.floatingStartY);
 
         float _pcent = values.changed / values.max;
         if (PlayerFloatingBar.showFloating && bars.barScript) MonoUIManager.Instance.UpdateBar(_pcent, bars.key);
         if (bars.suddenChangeBar) MonoUIManager.Instance.UpdateBar(_pcent, bars.suddenChangeBar);
-        if (bars.slowChangeBar) StartCoroutine(MonoUIManager.Instance.UpdateBarAsny(_pcent, bars.slowChangeBar));
+        if (bars.slowChangeBar) StartCoroutine(MonoUIManager.Instance.UpdateBarAsny(_pcent, bars.slowChangeBar, 3f));
     }
 }

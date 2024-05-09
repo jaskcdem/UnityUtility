@@ -6,7 +6,7 @@ using TMPro;
 public class BaseFloatingText : MonoBehaviour
 {
     [SerializeField] private TMP_Text textSource;
-    [SerializeField] string floatingTextMane = "FloatingText (TMP)";
+    [SerializeField] string floatingTextNane = "FloatingText (TMP)";
     [SerializeField] Color defColor = Color.red;
     public float moveSpeed = 2.0f, moveDuration = 2.0f;
     private float fTimer = 0.0f;
@@ -17,7 +17,7 @@ public class BaseFloatingText : MonoBehaviour
     }
     void LoadingSource()
     {
-        if (textSource == null) textSource = MonoResourcesLoader.Instance.LoadObject<TMP_Text>(floatingTextMane);
+        if (textSource == null) textSource = MonoResourcesLoader.Instance.LoadObject<TMP_Text>(floatingTextNane);
         if (textSource != null) defColor = textSource.color;
     }
 

@@ -68,7 +68,7 @@ internal partial class MonoUIManager : MonoSingleton<MonoUIManager>
                         floatingBars[i].gameObject.SetActive(true);
                         continue;
                     }
-                    floatingBars[i].UpdateBarToFollowTarget((mainCanvas, floatingRoot, mainCamera));
+                    //floatingBars[i].UpdateBarToFollowTarget((mainCanvas, floatingRoot, mainCamera));
                 }
 
                 bShowBar = true;
@@ -165,9 +165,11 @@ internal partial class MonoUIManager : MonoSingleton<MonoUIManager>
     /// <param name="sourceIndex">index of <see cref="textSource"/></param>
     /// <param name="vPos">start position</param>
     /// <param name="isPlayer">floating text belong to player or not</param>
+    /// <param name="scaleSize">bar scale size, default = <see cref="Vector3.one"/></param>
     /// <param name="followed">new Floating Text follow to</param>
     /// <param name="canvas">new Canvas setting when <paramref name="followed"/> not a canvas</param>
-    public void SpawnFloatingText(string showText, int sourceIndex, Vector3 vPos, bool isPlayer = true, Transform followed = null, FloatingCanvas canvas = null)
+    public void SpawnFloatingText(string showText, int sourceIndex, Vector3 vPos, bool isPlayer = true, Vector3 scaleSize = default,
+        Transform followed = null, FloatingCanvas canvas = null)
     {
         if (sourceIndex > textSource.Length - 1) return;
         GameObject go = Instantiate(textSource[sourceIndex]);
@@ -176,8 +178,11 @@ internal partial class MonoUIManager : MonoSingleton<MonoUIManager>
         ft.Setup(showText, (mainCanvas, floatingRoot, mainCamera), vPos);
         Debug.Assert(isPlayer || followed != null, "when [isPlayer] is false and [followed] is null, will take [floatingRoot] for default.");
         SetFloatingParent(new FloatingRootInfo { Root = isPlayer || followed == null ? floatingRoot : followed, canvas = canvas }, ft.transform);
-        ft.transform.SetLocalPositionAndRotation(vPos + Vector3.up, Quaternion.identity);
-        ft.transform.localScale = Vector3.one;
+        if (!isPlayer) ft.transform.SetLocalPositionAndRotation(vPos, Quaternion.identity);
+        else ft.transform.SetLocalPositionAndRotation(Vector3.one, Quaternion.identity);
+
+        ft.transform.localScale = scaleSize == default ? Vector3.one : scaleSize;
+        ft.gameObject.SetActive(true);
         floatingTexts.Add(ft);
     }
     /// <summary> show Floating text<para>if index out of range, do nothing</para> </summary>
@@ -186,9 +191,11 @@ internal partial class MonoUIManager : MonoSingleton<MonoUIManager>
     /// <param name="vPos">start position</param>
     /// <param name="color">text color</param>
     /// <param name="isPlayer">floating text belong to player or not</param>
+    /// <param name="scaleSize">bar scale size, default = <see cref="Vector3.one"/></param>
     /// <param name="followed">new Floating Text follow to</param>
     /// <param name="canvas">new Canvas setting when <paramref name="followed"/> not a canvas</param>
-    public void SpawnFloatingText(string showText, int sourceIndex, Vector3 vPos, Color color, bool isPlayer = true, Transform followed = null, FloatingCanvas canvas = null)
+    public void SpawnFloatingText(string showText, int sourceIndex, Vector3 vPos, Color color, bool isPlayer = true, Vector3 scaleSize = default,
+        Transform followed = null, FloatingCanvas canvas = null)
     {
         if (sourceIndex > textSource.Length - 1) return;
         GameObject go = Instantiate(textSource[sourceIndex]);
@@ -198,8 +205,11 @@ internal partial class MonoUIManager : MonoSingleton<MonoUIManager>
         ft.Setup(showText, (mainCanvas, floatingRoot, mainCamera), vPos);
         Debug.Assert(isPlayer || followed != null, "when [isPlayer] is false and [followed] is null, will take [floatingRoot] for default.");
         SetFloatingParent(new FloatingRootInfo { Root = isPlayer || followed == null ? floatingRoot : followed, canvas = canvas }, ft.transform);
-        ft.transform.SetLocalPositionAndRotation(vPos + Vector3.up, Quaternion.identity);
-        ft.transform.localScale = Vector3.one;
+        if (!isPlayer) ft.transform.SetLocalPositionAndRotation(vPos, Quaternion.identity);
+        else ft.transform.SetLocalPositionAndRotation(Vector3.one, Quaternion.identity);
+
+        ft.transform.localScale = scaleSize == default ? Vector3.one : scaleSize;
+        ft.gameObject.SetActive(true);
         floatingTexts.Add(ft);
     }
     #endregion
@@ -224,7 +234,7 @@ internal partial class MonoUIManager : MonoSingleton<MonoUIManager>
         var canvasGO = new GameObject($"Canvas-{Guid.NewGuid().ToString().Replace("-", "")[..6]}");
         canvasGO.AddComponent<Canvas>();
         //new component
-        Canvas _canvas = GetComponent<Canvas>();
+        Canvas _canvas = canvasGO.GetComponent<Canvas>();
         _canvas.renderMode = RenderMode.WorldSpace;
         _canvas.worldCamera = Camera.main;
         canvasInfo ??= new();

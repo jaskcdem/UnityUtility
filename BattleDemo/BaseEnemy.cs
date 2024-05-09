@@ -20,7 +20,6 @@ public class BaseEnemy : MonoBehaviour
     [SerializeField] protected SerializeSingleFloatingBar EnemyFloatingBar;
     protected string barKey;
     protected FloatingCanvas baseCanvas = new() { SortLayer = ("Enemys", 2), SortingOrder = 99 };
-    protected Vector3 StartPosition => Vector3.up * EnemyFloatingBar.floatingStartY;
     //floating root
     Canvas floatRoot;
 
@@ -115,13 +114,13 @@ public class BaseEnemy : MonoBehaviour
     protected void AdjustBar((BaseFloatingBar barScript, string key, Image suddenChangeBar, Image slowChangeBar) bars,
         (float amount, float changed, float max) values, Color textColor = default)
     {
-        string flowText = values.amount switch { > 0 => $"+{values}", _ => values.amount.ToString() };
+        string flowText = values.amount switch { > 0 => $"+{values.amount}", _ => values.amount.ToString() };
         if (textColor != default)
-            MonoUIManager.Instance.SpawnFloatingText(flowText, EnemyFloatingBar.defTextIndex, StartPosition, textColor, isPlayer: false,
-                followed: floatRoot ? floatRoot.transform : transform, canvas: baseCanvas);
+            MonoUIManager.Instance.SpawnFloatingText(flowText, EnemyFloatingBar.defTextIndex, Vector3.up * EnemyFloatingBar.floatingStartY, textColor, isPlayer: false,
+              scaleSize: new(0.01f, 0.01f, 0.01f), followed: floatRoot ? floatRoot.transform : transform, canvas: baseCanvas);
         else
-            MonoUIManager.Instance.SpawnFloatingText(flowText, EnemyFloatingBar.defTextIndex, StartPosition, isPlayer: false,
-                followed: floatRoot ? floatRoot.transform : transform, canvas: baseCanvas);
+            MonoUIManager.Instance.SpawnFloatingText(flowText, EnemyFloatingBar.defTextIndex, Vector3.up * EnemyFloatingBar.floatingStartY, isPlayer: false,
+              scaleSize: new(0.01f, 0.01f, 0.01f), followed: floatRoot ? floatRoot.transform : transform, canvas: baseCanvas);
 
         float _pcent = values.changed / values.max;
         if (bars.barScript.gameObject.activeSelf) MonoUIManager.Instance.UpdateBar(_pcent, bars.key);
