@@ -360,6 +360,18 @@ public class GameUtility
     /// <summary> 隨機取得新的<see cref="Vector3"/> </summary>
     /// <param name="range">隨機範圍</param>
     public static Vector3 Range((Vector3 min, Vector3 max) range) => Range(range.min, range.max);
+    /// <summary> Convert string to Vector3 </summary>
+    /// <param name="sVector"> convert string</param>
+    /// <returns>Vector3</returns>
+    /// <exception cref="FormatException"/>
+    public static Vector3 StringToVector3(string sVector)
+    {
+        //Remove the parentheses
+        if (sVector.StartsWith("(") && sVector.EndsWith(")")) sVector = sVector[1..^1];
+        string[] sArray = sVector.Split(',');
+        if (sArray.Length != 3) throw new FormatException("Not a vector3 string, please check");
+        return new(float.Parse(sArray[0]), float.Parse(sArray[1]), float.Parse(sArray[2]));
+    }
 }
 
 /// <summary> 敵方物件資源池 </summary>
