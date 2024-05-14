@@ -370,7 +370,7 @@ public class GameUtility
         if (sVector.StartsWith("(") && sVector.EndsWith(")")) sVector = sVector[1..^1];
         string[] sArray = sVector.Split(',');
         if (sArray.Length != 3) throw new FormatException("Not a vector3 string, please check");
-        return new(float.Parse(sArray[0]), float.Parse(sArray[1]), float.Parse(sArray[2]));
+        return new(float.Parse(sArray[0].Trim()), float.Parse(sArray[1].Trim()), float.Parse(sArray[2].Trim()));
     }
 }
 
