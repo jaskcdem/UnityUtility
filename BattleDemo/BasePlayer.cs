@@ -89,37 +89,39 @@ public class BasePlayer : MonoBehaviour
     }
 
     #region << HP/MP Change >>
-    public virtual void Damage()
+    public virtual void Damage(int amount)
     {
         if (bDead) return;
-        Hp--;
+        if (amount > 0) amount = -amount;
+        Hp += amount;
         if (Hp <= 0) { Hp = 0; bDead = true; }
         Debug.Log($"{gameObject.name} Leaf Hp: {Hp}");
-        AdjustBar((PlayerFloatingBar.hpBar, barKeyHP, PlayerBar.Healthbar, PlayerBar.HealthbarSub), (-1, Hp, MaxHp));
+        AdjustBar((PlayerFloatingBar.hpBar, barKeyHP, PlayerBar.Healthbar, PlayerBar.HealthbarSub), (amount, Hp, MaxHp));
     }
 
-    public virtual void Burnout()
+    public virtual void Burnout(int amount)
     {
-        Mp--;
+        if (amount > 0) amount = -amount;
+        Mp += amount;
         if (Mp <= 0) Mp = 0;
         Debug.Log($"{gameObject.name} Leaf Mp: {Mp}");
-        AdjustBar((PlayerFloatingBar.mpBar, barkeyMP, PlayerBar.Manabar, PlayerBar.ManabarSub), (-1, Mp, MaxMp), Color.cyan);
+        AdjustBar((PlayerFloatingBar.mpBar, barkeyMP, PlayerBar.Manabar, PlayerBar.ManabarSub), (amount, Mp, MaxMp), Color.cyan);
     }
 
-    public virtual void Heal()
+    public virtual void Heal(int amount)
     {
-        Hp++;
+        Hp += amount;
         if (Hp >= MaxHp) Hp = MaxHp;
         Debug.Log($"{gameObject.name} Leaf Hp: {Hp}");
-        AdjustBar((PlayerFloatingBar.hpBar, barKeyHP, PlayerBar.HealthbarSub, PlayerBar.Healthbar), (1, Hp, MaxHp), Color.green);
+        AdjustBar((PlayerFloatingBar.hpBar, barKeyHP, PlayerBar.HealthbarSub, PlayerBar.Healthbar), (amount, Hp, MaxHp), Color.green);
     }
 
-    public virtual void Recover()
+    public virtual void Recover(int amount)
     {
-        Mp++;
+        Mp += amount;
         if (Mp >= MaxHp) Mp = MaxMp;
         Debug.Log($"{gameObject.name} Leaf Mp: {Mp}");
-        AdjustBar((PlayerFloatingBar.mpBar, barkeyMP, PlayerBar.ManabarSub, PlayerBar.Manabar), (1, Mp, MaxMp), Color.blue);
+        AdjustBar((PlayerFloatingBar.mpBar, barkeyMP, PlayerBar.ManabarSub, PlayerBar.Manabar), (amount, Mp, MaxMp), Color.blue);
     }
 
     public virtual void Revival()

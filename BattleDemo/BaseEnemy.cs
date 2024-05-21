@@ -75,21 +75,22 @@ public class BaseEnemy : MonoBehaviour
             AdjustBar(bars: (EnemyFloatingBar.Bar, barKey, EnemyBar.BarSub, EnemyBar.BarMain), values: (MaxHp, Hp, MaxHp));
     }
 
-    public virtual void Damage()
+    public virtual void Damage(int amount)
     {
         if (bDead) return;
-        Hp--;
+        if (amount > 0) amount = -amount;
+        Hp += amount;
         if (Hp <= 0) { Hp = 0; bDead = true; }
         Debug.Log($"{gameObject.name} Leaf Hp: {Hp}");
-        AdjustBar(bars: (EnemyFloatingBar.Bar, barKey, EnemyBar.BarMain, EnemyBar.BarSub), values: (-1, Hp, MaxHp));
+        AdjustBar(bars: (EnemyFloatingBar.Bar, barKey, EnemyBar.BarMain, EnemyBar.BarSub), values: (amount, Hp, MaxHp));
     }
 
-    public virtual void Heal()
+    public virtual void Heal(int amount)
     {
-        Hp++;
+        Hp += amount;
         if (Hp >= MaxHp) Hp = MaxHp;
         Debug.Log($"{gameObject.name} Leaf Hp: {Hp}");
-        AdjustBar(bars: (EnemyFloatingBar.Bar, barKey, EnemyBar.BarSub, EnemyBar.BarMain), values: (1, Hp, MaxHp));
+        AdjustBar(bars: (EnemyFloatingBar.Bar, barKey, EnemyBar.BarSub, EnemyBar.BarMain), values: (amount, Hp, MaxHp));
     }
 
     public virtual void Deaded()
