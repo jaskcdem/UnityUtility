@@ -11,7 +11,7 @@ public class FollowCam : MonoBehaviour
         Debug.Assert(m_Target != null, "Null Target is not allow!");
     }
 
-    private void FixedUpdate()
+    private void LateUpdate()
     {
         if (!m_Target) return;
 
