@@ -6,6 +6,11 @@ public partial class MonoGameManager : MonoSingleton<MonoGameManager>
 {
     private List<MapObstacle> Obstacles;
     public GameObject Player; public const string PlayerTag = "Player";
+    [Tooltip("camera collide check layer")] public const string CameraLayerName = "Wall";
+    [Tooltip("camera collide player layer")] public const string PlayerLayerName = "Player";
+    [Tooltip("camera collide mob layer")] public const string MobLayerName = "Mob";
+    [Tooltip("skills collide check layer")] public const string SlopeLayerName = "Slope";
+    [Tooltip("camera collide check radius")] public const float CameraRadius = 0.1f;
 
     void Start()
     {
@@ -24,4 +29,8 @@ public partial class MonoGameManager : MonoSingleton<MonoGameManager>
     public GameObject GetPlayer() => Player;
 
     public List<MapObstacle> GetObstacles() => Obstacles;
+
+    /// <summary> <see cref="Physics.SphereCast"/></summary>
+    public static bool CheckCameraCollide((Vector3 original, Vector3 direction) vecCam, out RaycastHit hitInfo, float maxDistance)
+        => Physics.SphereCast(vecCam.original, CameraRadius, vecCam.direction, out hitInfo, maxDistance, LayerMask.NameToLayer(CameraLayerName));
 }
