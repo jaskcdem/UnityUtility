@@ -9,10 +9,12 @@ using UnityEngine.UI;
 [Serializable]
 public class SerializePlayerBar
 {
-    //player bar setting : subBar is what under mainBar but not background
-    public Image Healthbar;
+    /* BarMain : sudden Change Bar when got damage, the base requird
+     * BarSub : slowly Change Bar when got damage
+     */
+    public Image HealthbarMain;
     public Image HealthbarSub = null;
-    public Image Manabar;
+    public Image ManabarMain;
     public Image ManabarSub = null;
 }
 
